@@ -1,6 +1,6 @@
 # Codigos-para-bueiros-inteligentes
 Código em C++ para funcionamento do circuito do sensor + pseudocódigo para funcionamento do sensor junto com a API de clima  
-// Definindo os pinos do Sensor Ultrassônico
+// Definindo os pinos do Sensor Ultrassônico  
 const int pinoTrig = 7;
 const int pinoEcho = 6;
 
@@ -82,5 +82,5 @@ void loop() {
   delay(tempoDeDescanso); 
 }
 
-Esse código faz com que o circuito funcione para reconhecer quando o bueiro está ficando com sua capacidade máxima de lixo  
-Nesse trabalho, buscamos uma forma de acabar com os alagamentos nas cidades.
+Esse código faz com que o circuito funcione para reconhecer quando o bueiro está ficando com sua capacidade máxima de lixo   
+Nesse trabalho, buscamos uma forma de acabar com os alagamentos nas cidades.  
