@@ -1,6 +1,6 @@
 # Codigos-para-bueiros-inteligentes
 Código em C++ para funcionamento do circuito do sensor + pseudocódigo para funcionamento do sensor junto com a API de clima  
-// Definindo os pinos do Sensor Ultrassônico  
+// Definindo os pinos do Sensor Ultrassônico
 const int pinoTrig = 7;
 const int pinoEcho = 6;
 
