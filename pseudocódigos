@@ -1,0 +1,55 @@
+// ————————————————————————————
+// CONFIGURAÇÕES DO SISTEMA (NUVEM)
+// ———————————————————————————
+Definir limite_critico = 30 // centímetros (Risco alto)
+Definir limite_aviso = 80   // centímetros (Risco médio)
+// ————————————————————————————
+// 1: RECEPÇÃO DE DADOS DO HARDWARE
+// ————————————————————————————
+Função receber_dados_do_bueiro():
+    Aguardar conexão do dispositivo (Arduino/ESP32)
+    Ler ID_do_Bueiro
+    Ler Nivel_de_Distancia
+    Retornar ID_do_Bueiro, Nivel_de_Distancia
+// —————————————————————————————
+// 2: INTEGRAÇÃO COM API DE CLIMA
+// ——————————————————————————————-
+Função consultar_api_previsao_tempo(localizacao_bueiro):
+    Conectar à API
+    Buscar previsao_chuva_proximas_24h
+    Retornar status_chuva // Pode ser: "Seco", "Chuva Leve", "Tempestade"
+// —————————————————————————————
+// 3: LÓGICA PRINCIPAL (CÉREBRO DO SISTEMA)
+// ——————————————————————————————
+Função analisar_risco_e_gerar_alertas():
+    // 1. Recebe a leitura do bueiro da rua
+    ID, Distancia = receber_dados_do_bueiro() 
+    // 2. Busca a previsão do tempo para aquela região
+    Previsao = consultar_api_previsao_tempo(Localizacao(ID))
+    // 3. Cruzamento de Dados e Tomada de Decisão
+    SE Distancia < limite_critico ENTÃO
+        // O bueiro está muito entupido
+        SE Previsao == "Tempestade" ENTÃO
+            Acionar_Alarme_Painel("ALERTA MÁXIMO: Risco Iminente de Alagamento!")
+            Despachar_Equipe_Urgencia(ID, "Limpeza Imediata")
+        SENÃO
+            Acionar_Alarme_Painel("AVISO: Bueiro Obstruído.")
+            Adicionar_Fila_Manutencao_Comum(ID)
+        FIM_SE 
+    SENÃO SE Distancia >= limite_critico E Distancia <= limite_aviso ENTÃO
+        // O bueiro está acumulando lixo (nível médio)
+        SE Previsao == "Tempestade" ENTÃO
+            Acionar_Alarme_Painel("ATENÇÃO: Bueiro enchendo e há previsão de chuva.")
+            Aumentar_Prioridade_Manutencao(ID)
+        SENÃO
+            Registrar_Status_Banco_de_Dados(ID, "Nível Amarelo - Monitorar")
+        FIM_SE  
+    SENÃO
+        // O bueiro está limpo (maior que 80cm)
+        Registrar_Status_Banco_de_Dados(ID, "Nível Verde - Operacional") 
+    FIM_SE
+FIM_Função
+// Executar o sistema continuamente
+Enquanto Verdadeiro FAÇA:
+    analisar_risco_e_gerar_alertas()
+   
